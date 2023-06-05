@@ -14,10 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -31,6 +28,7 @@ public class RatingController {
 
     @PostMapping("")
     @ApiOperation(value = "add rating")
+    @CrossOrigin
     public ResponseEntity postRating(@Valid @RequestBody RatingRequest ratingRequest) {
         if (!bookRepository.existsById(ratingRequest.getBookId())) {
             throw new NotFoundException(HttpStatus.NOT_FOUND, "book  not exist");

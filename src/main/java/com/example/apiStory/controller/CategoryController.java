@@ -22,6 +22,8 @@ public class CategoryController {
 
     @PostMapping("")
     @ApiOperation(value = "add category")
+    @CrossOrigin
+
     public ResponseEntity postCategory(@Valid @RequestBody CategoryRequest category) {
         if (!categoryRepository.existsByName(category.getName())) {
             Category categorySaved = categoryRepository.save(Category.builder().name(category.getName()).status(true)
@@ -33,6 +35,8 @@ public class CategoryController {
     }
 
     @ApiOperation(value = "get category")
+    @CrossOrigin
+
     public ResponseEntity getCategories() {
         List<Category> categories = categoryRepository.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.FOUND.value(), true, "get categories successfully ", categories));

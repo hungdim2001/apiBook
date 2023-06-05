@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RequestMapping("/api/books")
@@ -52,6 +53,7 @@ public class BookController {
     @ApiOperation(value = "add book")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_AUTHOR')")
     @RequestMapping(path = "", method = POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @CrossOrigin
     public ResponseEntity addBook(@RequestParam("title")
                                   String title,
                                   @RequestParam("categoryName")
@@ -75,24 +77,29 @@ public class BookController {
 
     @ApiOperation(value = "get book")
     @GetMapping("")
+    @CrossOrigin
     public ResponseEntity getBook(HttpServletRequest request) throws IOException {
         String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
                 .replacePath(null)
                 .build()
                 .toUriString();
+//      Lấy sách tất cả truyện
         List<Book> books = bookRepository.findAll();
+//      Lấy ra một List bookIds với id lấy từ books
         List<Long> bookIds = books.stream().map(item -> item.getId()).collect(Collectors.toList());
+//      Tạo một List CategoryBooks lấy từ database tìm theo bookIds
         List<CategoryBook> categoryBooks = categoryBookRepository.findByBookIds(bookIds);
+//      Tạo ra một List categoryIds dựa trên categoryBooks.id
         List<Long> categoryIds = categoryBooks.stream().map(item -> item.getCategoryId()).collect(Collectors.toList());
+//      Tạo ra môt List Categories theo như CategoryId trả về
         List<Category> categories = categoryRepository.findBydIs(categoryIds);
         Map<Long, Category> categoryMap = new HashMap<>();
         Map<Long, CategoryBook> categoryBookMap = new HashMap<>();
-        categories.stream().forEach(item -> {
-            categoryMap.put(item.getId(), item);
+        categories.stream().forEach(
+                item -> {categoryMap.put(item.getId(), item);
         });
         categoryBooks.stream().forEach(item ->
-        {
-            categoryBookMap.put(item.getBookId(), item);
+        {categoryBookMap.put(item.getBookId(), item);
         });
         List<BookResponse> bookResponses = new ArrayList<>();
         books.stream().forEach((item) -> {
@@ -101,17 +108,18 @@ public class BookController {
             bookResponse.setDescription(item.getDescription());
             bookResponse.setStatus(item.getStatus());
             bookResponse.setTitle(item.getTitle());
-            bookResponse.setAvatarUrl(baseUrl + "/apiBooks/api/books/thumbnail/" + item.getAvatarUrl());
+            bookResponse.setAvatarUrl(baseUrl + "/api/books/thumbnail/" + item.getAvatarUrl());
             bookResponse.setIsDone(item.getIsDone());
             String name = categoryMap.get(categoryBookMap.get(item.getId()).getCategoryId()).getName();
             bookResponse.setCategory(name);
             bookResponses.add(bookResponse);
         });
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "get books successfully", bookResponses));
-
     }
 
+
     @GetMapping("/thumbnail/{fileName}")
+    @CrossOrigin
     public ResponseEntity<byte[]> handleFileUpload(@PathVariable String fileName) throws IOException {
         byte[] fileContent = ftpService.retrieveFile(fileName);
         String contentType = URLConnection.guessContentTypeFromName(fileName);
@@ -124,5 +132,44 @@ public class BookController {
         return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
 
     }
+
+
+    @ApiOperation(value = "get book category")
+    @GetMapping("/{category}")
+    @CrossOrigin
+    public ResponseEntity getBookByCategory(HttpServletRequest request, @PathVariable String category) throws IOException {
+        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                .replacePath(null)
+                .build()
+                .toUriString();
+        List<Book> books = bookRepository.findAll();
+        List<Long> bookIds = books.stream().map(item -> item.getId()).collect(Collectors.toList());
+        List<CategoryBook> categoryBooks = categoryBookRepository.findByBookIds(bookIds);
+        List<Long> categoryIds = categoryBooks.stream().map(item -> item.getCategoryId()).collect(Collectors.toList());
+        List<Category> categories = categoryRepository.findBydIs(categoryIds);
+        Map<Long, Category> categoryMap = new HashMap<>();
+        Map<Long, CategoryBook> categoryBookMap = new HashMap<>();
+        categories.stream().forEach(item -> {categoryMap.put(item.getId(), item);});
+        categoryBooks.stream().forEach(item -> {categoryBookMap.put(item.getBookId(), item);});
+        List<BookResponse> bookResponses = new ArrayList<>();
+        books.stream().forEach((item) -> {
+            String name = categoryMap.get(categoryBookMap.get(item.getId()).getCategoryId()).getName();
+            if (category.equalsIgnoreCase(name)){
+                BookResponse bookResponse = new BookResponse();
+                bookResponse.setId(item.getId());
+                bookResponse.setDescription(item.getDescription());
+                bookResponse.setStatus(item.getStatus());
+                bookResponse.setTitle(item.getTitle());
+                bookResponse.setAvatarUrl(baseUrl + "/api/books/thumbnail/" + item.getAvatarUrl());
+                bookResponse.setIsDone(item.getIsDone());
+                bookResponse.setCategory(name);
+                bookResponses.add(bookResponse);
+            }
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "get books successfully", bookResponses));
+    }
+
+
 
 }

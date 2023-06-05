@@ -34,28 +34,46 @@ public class ChapterController {
     @Autowired
     BookRepository bookRepository;
 
+
+//    @Transactional(rollbackOn = Exception.class)
+//    @ApiOperation(value = "add book")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_AUTHOR')")
+//    @RequestMapping(path = "", method = POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+//    @CrossOrigin
+
     @Transactional(rollbackOn = Exception.class)
     @ApiOperation(value = "add chapter")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_AUTHOR')")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_AUTHOR')")
     @PostMapping(path = "")
+    @CrossOrigin
     public ResponseEntity addChapters(@Valid @RequestBody ChapterRequest chapter) {
         Book book = bookRepository.findById(chapter.getBookId()).orElseThrow(
                 () -> new NotFoundException(HttpStatus.NOT_FOUND, "book id not found"));
-        Chapter chapterSave = chapterRepository.save(Chapter.builder().bookId(chapter.getBookId())
-                .content(chapter.getContent()).number(chapter.getNumber()).build());
+        Chapter chapterSave = chapterRepository.save(Chapter.builder()
+                .bookId(chapter.getBookId())
+                .chapterTitle(chapter.getChapterTitle())
+                .content(chapter.getContent())
+                .number(chapter.getNumber())
+                .build());
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "add chapter successfully", ChapterResponse.builder().bookId(book.getId()).name(book.getTitle()).number(chapterSave.getNumber()).content(chapterSave.getContent()).build()));
     }
 
-    @ApiOperation(value = "add chapter")
+    @ApiOperation(value = "get chapter")
     @GetMapping("/{bookId}")
+    @CrossOrigin
     public ResponseEntity getChapter(@PathVariable Long bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow(
                 () -> new NotFoundException(HttpStatus.NOT_FOUND, "book id not found"));
         List<Chapter> chapter = chapterRepository.getChapterByBookId(bookId);
         List<ChapterResponse> chapterResponses = new ArrayList<>();
         chapter.stream().forEach(item -> {
-            ChapterResponse chapterResponse = ChapterResponse.builder().number(item.getNumber()).content(item.getContent())
-                    .name(book.getTitle()).bookId(item.getBookId()).build();
+            ChapterResponse chapterResponse = ChapterResponse.builder()
+                    .number(item.getNumber())
+                    .content(item.getContent())
+                    .chapterTitle(item.getChapterTitle())
+                    .name(book.getTitle())
+                    .bookId(item.getBookId())
+                    .build();
             chapterResponses.add(chapterResponse);
         });
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "get chapter successfully", chapterResponses));

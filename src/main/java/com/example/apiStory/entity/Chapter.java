@@ -18,6 +18,8 @@ public class Chapter {
     private Long id;
     private Long bookId;
     private Long number;
+    private String chapterTitle;
     @Column(columnDefinition = "TEXT")
     private String content;
+
 }

@@ -22,18 +22,22 @@ public class AuthController {
 
     @PostMapping("/register")
     @ApiOperation(value = "Đăng ký")
+    @CrossOrigin
     public ResponseEntity register(@Valid @RequestBody RegisterRequest user) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "save user successfully", authService.regitser(user)));
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "save user successfully", authService.register(user)));
     }
 
     @ApiOperation(value = "verify code")
     @PostMapping("/verify")
+    @CrossOrigin
     public ResponseEntity verify(@RequestBody VerifyRequest verifyRequest, HttpServletRequest httpServletRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "verify successfully", authService.verify(verifyRequest.getCode(), httpServletRequest)));
     }
 
     @ApiOperation(value = "Đăng nhập")
     @PostMapping("/login")
+    @CrossOrigin
+
     public ResponseEntity signIn(@Valid @RequestBody LoginRequest user) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "login successfully", authService.signIn(user)));
 
@@ -41,17 +45,23 @@ public class AuthController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER', 'ROLE_AUTHOR')")
     @ApiOperation(value = "đăng xuất")
     @PostMapping("/logout")
+    @CrossOrigin
+
     public ResponseEntity logout(@RequestBody LogoutRequest logoutRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "log out successfully", authService.logout(logoutRequest.getToken())));
     }
 
     @ApiOperation(value = "gửi lại mã code")
     @GetMapping("/resendCode")
+    @CrossOrigin
+
     public ResponseEntity resendCode(HttpServletRequest httpServletRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "resend code successfully", authService.reSendCode(httpServletRequest)));
     }
 
     @PostMapping("/findEmail")
+    @CrossOrigin
+
     public ResponseEntity findEmail(@RequestBody FindEmailRequest findEmailRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "Please check your email for password reset code", authService.findEmail(findEmailRequest.getEmail())));
     }
@@ -59,6 +69,7 @@ public class AuthController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER', 'ROLE_AUTHOR')")
     @ApiOperation(value = "Đặt lại mật khẩu")
     @PostMapping("/resetPassword")
+    @CrossOrigin
     public ResponseEntity resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest, HttpServletRequest httpServletRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "reset password successfully", authService.resetPassword(resetPasswordRequest.getPassword(), httpServletRequest)));
 
@@ -67,6 +78,7 @@ public class AuthController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping("/whoami")
+    @CrossOrigin
     public ResponseEntity whoAmI(HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "get infor successfully",authService.whoAmI(request)));
     }

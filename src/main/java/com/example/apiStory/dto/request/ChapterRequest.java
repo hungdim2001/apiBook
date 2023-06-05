@@ -8,5 +8,6 @@ import lombok.Data;
 public class ChapterRequest {
     private Long bookId;
     private Long number;
+    private String chapterTitle;
     private String content;
 }

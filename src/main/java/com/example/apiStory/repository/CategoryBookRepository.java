@@ -9,5 +9,4 @@ import java.util.List;
 public interface CategoryBookRepository extends JpaRepository<CategoryBook, Long> {
     @Query(value = "SELECT u FROM CategoryBook u WHERE u.bookId in ?1")
     List<CategoryBook> findByBookIds(List<Long> ids);
-
 }

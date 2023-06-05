@@ -19,6 +19,8 @@ public class TokenController {
    // @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER', 'ROLE_AUTHOR')")
     @ApiOperation(value ="refresh token")
     @PostMapping("/refreshToken")
+    @CrossOrigin
+
     public ResponseEntity refreshToken(@RequestBody TokenRequest token)  {
         return ResponseEntity.status(HttpStatus.OK).body(tokenService.refreshToken(token.getRfToken()));
     }

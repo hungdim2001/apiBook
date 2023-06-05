@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
-    @Query("select  c from Book  c where c.status = true ")
+    @Query("select c from Book  c where c.status = true ")
     List<Book> findAll();
 
     @Query(value = "select count (b)>0 from Book b where b.id =?1 and b.status =true ")

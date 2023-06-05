@@ -19,7 +19,7 @@ import java.io.*;
 @Service
 public class FtpService implements CommandLineRunner, ApplicationListener<ContextClosedEvent> {
 
-    private static final String SERVER_ADDRESS = "192.46.224.142";
+    private static final String SERVER_ADDRESS = "127.0.0.1";
     private static final int SERVER_PORT = 21;
     private static final int FTP_TIMEOUT = 60000;
     private static final String USERNAME = "hungdz";

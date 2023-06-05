@@ -58,7 +58,7 @@ public class AuthService {
     @Autowired
     private CodeRepository codeRepository;
 
-    public RegisterResponse regitser(RegisterRequest user) {
+    public RegisterResponse register(RegisterRequest user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new DuplicateException(HttpStatus.CONFLICT, "email have already taken");
         } else if (userRepository.existsByusername(user.getUsername())) {
