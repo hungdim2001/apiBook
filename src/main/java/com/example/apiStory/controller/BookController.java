@@ -85,7 +85,6 @@ public class BookController {
                 .toUriString();
 //      Lấy sách tất cả truyện
         List<Book> books = bookRepository.findAll();
-//      Lấy ra một List bookIds với id lấy từ books
         List<Long> bookIds = books.stream().map(item -> item.getId()).collect(Collectors.toList());
 //      Tạo một List CategoryBooks lấy từ database tìm theo bookIds
         List<CategoryBook> categoryBooks = categoryBookRepository.findByBookIds(bookIds);
@@ -117,6 +116,83 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "get books successfully", bookResponses));
     }
 
+    @ApiOperation(value = "get book")
+    @GetMapping("/search/{title}")
+    @CrossOrigin
+    public ResponseEntity getBookBySearch(HttpServletRequest request,@PathVariable String title) throws IOException {
+        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                .replacePath(null)
+                .build()
+                .toUriString();
+
+        List<Book> books = bookRepository.findBookBySearch(title);
+        List<Long> bookIds = books.stream().map(item -> item.getId()).collect(Collectors.toList());
+        List<CategoryBook> categoryBooks = categoryBookRepository.findByBookIds(bookIds);
+        List<Long> categoryIds = categoryBooks.stream().map(item -> item.getCategoryId()).collect(Collectors.toList());
+        List<Category> categories = categoryRepository.findBydIs(categoryIds);
+        Map<Long, Category> categoryMap = new HashMap<>();
+        Map<Long, CategoryBook> categoryBookMap = new HashMap<>();
+        categories.stream().forEach(
+                item -> {categoryMap.put(item.getId(), item);
+                });
+        categoryBooks.stream().forEach(item ->
+        {categoryBookMap.put(item.getBookId(), item);
+        });
+        List<BookResponse> bookResponses = new ArrayList<>();
+        books.stream().forEach((item) -> {
+            BookResponse bookResponse = new BookResponse();
+            bookResponse.setId(item.getId());
+            bookResponse.setDescription(item.getDescription());
+            bookResponse.setStatus(item.getStatus());
+            bookResponse.setTitle(item.getTitle());
+            bookResponse.setAvatarUrl(baseUrl + "/api/books/thumbnail/" + item.getAvatarUrl());
+            bookResponse.setIsDone(item.getIsDone());
+            String name = categoryMap.get(categoryBookMap.get(item.getId()).getCategoryId()).getName();
+            bookResponse.setCategory(name);
+            bookResponses.add(bookResponse);
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "get books successfully", bookResponses));
+    }
+
+
+
+    @ApiOperation(value = "get book")
+    @GetMapping("/done")
+    @CrossOrigin
+    public ResponseEntity getBookDone(HttpServletRequest request) throws IOException {
+        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                .replacePath(null)
+                .build()
+                .toUriString();
+
+        List<Book> books = bookRepository.findBookDone();
+        List<Long> bookIds = books.stream().map(item -> item.getId()).collect(Collectors.toList());
+        List<CategoryBook> categoryBooks = categoryBookRepository.findByBookIds(bookIds);
+        List<Long> categoryIds = categoryBooks.stream().map(item -> item.getCategoryId()).collect(Collectors.toList());
+        List<Category> categories = categoryRepository.findBydIs(categoryIds);
+        Map<Long, Category> categoryMap = new HashMap<>();
+        Map<Long, CategoryBook> categoryBookMap = new HashMap<>();
+        categories.stream().forEach(
+                item -> {categoryMap.put(item.getId(), item);
+                });
+        categoryBooks.stream().forEach(item ->
+        {categoryBookMap.put(item.getBookId(), item);
+        });
+        List<BookResponse> bookResponses = new ArrayList<>();
+        books.stream().forEach((item) -> {
+            BookResponse bookResponse = new BookResponse();
+            bookResponse.setId(item.getId());
+            bookResponse.setDescription(item.getDescription());
+            bookResponse.setStatus(item.getStatus());
+            bookResponse.setTitle(item.getTitle());
+            bookResponse.setAvatarUrl(baseUrl + "/api/books/thumbnail/" + item.getAvatarUrl());
+            bookResponse.setIsDone(item.getIsDone());
+            String name = categoryMap.get(categoryBookMap.get(item.getId()).getCategoryId()).getName();
+            bookResponse.setCategory(name);
+            bookResponses.add(bookResponse);
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "get books successfully", bookResponses));
+    }
 
     @GetMapping("/thumbnail/{fileName}")
     @CrossOrigin
@@ -142,31 +218,33 @@ public class BookController {
                 .replacePath(null)
                 .build()
                 .toUriString();
-        List<Book> books = bookRepository.findAll();
+
+        List<Book> books = bookRepository.findBookByCategory(category);
         List<Long> bookIds = books.stream().map(item -> item.getId()).collect(Collectors.toList());
         List<CategoryBook> categoryBooks = categoryBookRepository.findByBookIds(bookIds);
         List<Long> categoryIds = categoryBooks.stream().map(item -> item.getCategoryId()).collect(Collectors.toList());
         List<Category> categories = categoryRepository.findBydIs(categoryIds);
         Map<Long, Category> categoryMap = new HashMap<>();
         Map<Long, CategoryBook> categoryBookMap = new HashMap<>();
-        categories.stream().forEach(item -> {categoryMap.put(item.getId(), item);});
-        categoryBooks.stream().forEach(item -> {categoryBookMap.put(item.getBookId(), item);});
+        categories.stream().forEach(
+                item -> {categoryMap.put(item.getId(), item);
+                });
+        categoryBooks.stream().forEach(item ->
+        {categoryBookMap.put(item.getBookId(), item);
+        });
         List<BookResponse> bookResponses = new ArrayList<>();
         books.stream().forEach((item) -> {
+            BookResponse bookResponse = new BookResponse();
+            bookResponse.setId(item.getId());
+            bookResponse.setDescription(item.getDescription());
+            bookResponse.setStatus(item.getStatus());
+            bookResponse.setTitle(item.getTitle());
+            bookResponse.setAvatarUrl(baseUrl + "/api/books/thumbnail/" + item.getAvatarUrl());
+            bookResponse.setIsDone(item.getIsDone());
             String name = categoryMap.get(categoryBookMap.get(item.getId()).getCategoryId()).getName();
-            if (category.equalsIgnoreCase(name)){
-                BookResponse bookResponse = new BookResponse();
-                bookResponse.setId(item.getId());
-                bookResponse.setDescription(item.getDescription());
-                bookResponse.setStatus(item.getStatus());
-                bookResponse.setTitle(item.getTitle());
-                bookResponse.setAvatarUrl(baseUrl + "/api/books/thumbnail/" + item.getAvatarUrl());
-                bookResponse.setIsDone(item.getIsDone());
-                bookResponse.setCategory(name);
-                bookResponses.add(bookResponse);
-            }
+            bookResponse.setCategory(name);
+            bookResponses.add(bookResponse);
         });
-
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "get books successfully", bookResponses));
     }
 

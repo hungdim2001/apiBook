@@ -11,6 +11,7 @@ import com.example.apiStory.repository.BookRepository;
 import com.example.apiStory.repository.ChapterRepository;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +61,7 @@ public class ChapterController {
 
     @ApiOperation(value = "get chapter")
     @GetMapping("/{bookId}")
+    @Query()
     @CrossOrigin
     public ResponseEntity getChapter(@PathVariable Long bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow(
