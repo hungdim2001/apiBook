@@ -16,5 +16,7 @@ public class BookResponse {
     private String description;
     private String title;
     private Boolean isDone;
+    private double star;
     private String category;
+    private Long chapter;
 }
