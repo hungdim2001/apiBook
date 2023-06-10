@@ -39,6 +39,7 @@ public class RatingController {
 
         }
         ratingRepository.save(Rating.builder().star(ratingRequest.getStar()).bookId(ratingRequest.getBookId()).userId(userId).build());
-        throw new DuplicateException(HttpStatus.CONFLICT, "duplicate record");
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "get books successfully", ratingRepository.save(Rating.builder().star(ratingRequest.getStar()).bookId(ratingRequest.getBookId()).userId(userId).build())));
+
     }
 }
