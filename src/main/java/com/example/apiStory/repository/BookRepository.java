@@ -33,6 +33,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     Optional<Book> findById(Long id);
 
-    @Query(value = "select b.* from favourite_books fb, books b where fb.user_id =2 and b.id = fb.book_id", nativeQuery = true)
+//    @Query(value = "select b.* from favourite_books fb, books b where fb.user_id =2 and b.id = fb.book_id", nativeQuery = true)
+    @Query(value = "SELECT b.* FROM favourite_books fb JOIN books b ON fb.book_id = b.id WHERE fb.user_id = ?1", nativeQuery = true)
     List<Book> findByYourBook(Long userId);
 }

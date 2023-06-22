@@ -36,7 +36,6 @@ public class CategoryController {
 
     @ApiOperation(value = "get category")
     @CrossOrigin
-
     public ResponseEntity getCategories() {
         List<Category> categories = categoryRepository.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.FOUND.value(), true, "get categories successfully ", categories));
