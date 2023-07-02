@@ -14,7 +14,7 @@
   background-position: 0 0;
   background-repeat: repeat;
   background-size: auto auto;
-  color: #fff;
+  color: #1b2a47;
 }
 */
 
@@ -88,7 +88,7 @@ a:focus {
 }
 
 .left-content ul li a {
-    color: #fff;
+    color: #1b2a47;
     line-height: 50px;
     padding-right: 30px;
     display: block;

@@ -14,7 +14,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @RequestMapping("")
 @Controller
@@ -33,10 +37,15 @@ public class LoginController {
 
     @GetMapping("/login")
     @CrossOrigin
-    public String login(Model model) {
+    public String login(Model model, HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException, ServletException {
+        if (request.getUserPrincipal() != null && request.getUserPrincipal().getName() != null) {
+            // User is already logged in, redirect to index page
+            return "redirect:/dashboard";
+        }
         if (model.containsAttribute("error")) {
             model.addAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
         }
+
         return "loginPage";
     }
 
@@ -49,6 +58,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
+    @CrossOrigin
     public String login(@RequestParam("username") String username, @RequestParam("password") String password, RedirectAttributes redirectAttributes, HttpSession session) {
         Authentication authentication = null;
         try {
@@ -60,7 +70,7 @@ public class LoginController {
             return "redirect:/login";
         }
         session.setAttribute("username", username);
-        return "redirect:/index";
+        return "redirect:/dashboard";
 
     }
 

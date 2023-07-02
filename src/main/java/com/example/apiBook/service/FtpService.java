@@ -29,6 +29,7 @@ public class FtpService implements CommandLineRunner, ApplicationListener<Contex
         System.out.println("ftpPath: " + ftpPath + fileName);
         InputStream inputStream = file.getInputStream();
         boolean success = ftpClient.storeFile(fileName, inputStream);
+        disconnectFTPServer();
     }
 
     public byte[] retrieveFile(String fileName) throws IOException {
@@ -37,6 +38,7 @@ public class FtpService implements CommandLineRunner, ApplicationListener<Contex
         InputStream inputStream = ftpClient.retrieveFileStream(ftpPath + fileName);
         System.out.println("input Stream" + inputStream);
         byte[] fileContent = IOUtils.toByteArray(inputStream);
+        disconnectFTPServer();
         return fileContent;
     }
 

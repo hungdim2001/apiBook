@@ -58,15 +58,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
         http
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/index").authenticated()
+                .antMatchers("/dashboard/**").authenticated()
+                .antMatchers("/category/**").authenticated()
+                .antMatchers("/chapter/**").authenticated()
+                .antMatchers("/book/**").authenticated()
+                .antMatchers("/user/**").authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/index")
+                .defaultSuccessUrl("/dashboard")
                 .and()
                 .sessionManagement()
                 .sessionFixation().newSession()

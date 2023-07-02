@@ -25,5 +25,5 @@ public class Book {
     @Column(name = "title",columnDefinition = "TEXT", length = 5000)
     private String title;
     @Column(name = "is_done")
-    private Boolean isDone;
+        private Boolean isDone;
 }

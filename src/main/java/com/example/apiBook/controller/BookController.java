@@ -9,6 +9,7 @@ import com.example.apiBook.helper.ResponseObj;
 import com.example.apiBook.repository.*;
 import com.example.apiBook.service.FtpService;
 import io.swagger.annotations.ApiOperation;
+import lombok.Synchronized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -334,6 +335,7 @@ public class BookController {
 
     @GetMapping("/thumbnail/{fileName}")
     @CrossOrigin
+    @Synchronized
     public ResponseEntity<byte[]> handleFileUpload(@PathVariable String fileName) throws IOException {
         byte[] fileContent = ftpService.retrieveFile(fileName);
         String contentType = URLConnection.guessContentTypeFromName(fileName);
@@ -341,6 +343,7 @@ public class BookController {
             contentType = "application/octet-stream";
         }
         HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl("no-cache");
         headers.setContentType(MediaType.parseMediaType(contentType));
         headers.setContentDisposition(ContentDisposition.inline().filename(fileName).build());
         return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);

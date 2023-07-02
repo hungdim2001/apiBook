@@ -20,7 +20,7 @@
 	opacity:1;
 }
 .modal-close-area a{
-	    color: #fff;
+	    color: #1b2a47;
     font-size: 16px;
     background: #03a9f4;
     height: 30px;
@@ -101,7 +101,7 @@
 .modal-area-button a, .modal-footer a{
 	padding: 13px 28px;
     text-decoration: none;
-    color: #fff;
+    color: #1b2a47;
     position: relative;
     z-index: 11;
     font-size: 14px;

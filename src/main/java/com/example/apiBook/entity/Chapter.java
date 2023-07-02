@@ -3,6 +3,7 @@ package com.example.apiBook.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,5 +22,7 @@ public class Chapter {
     private String chapterTitle;
     @Column(columnDefinition = "TEXT")
     private String content;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
 }

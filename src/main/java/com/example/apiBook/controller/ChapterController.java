@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RequestMapping("/api/chapters")
 @RestController
@@ -49,6 +51,7 @@ public class ChapterController {
                 .bookId(chapter.getBookId())
                 .chapterTitle(chapter.getChapterTitle())
                 .content(chapter.getContent())
+                .createdAt(LocalDateTime.now())
                 .number(chapter.getNumber())
                 .build());
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "add chapter successfully", ChapterResponse.builder().bookId(book.getId()).name(book.getTitle()).number(chapterSave.getNumber()).content(chapterSave.getContent()).build()));
@@ -63,9 +66,10 @@ public class ChapterController {
                 () -> new NotFoundException(HttpStatus.NOT_FOUND, "book id not found"));
         List<Chapter> chapter = chapterRepository.getChapterByBookId(bookId);
         List<ChapterResponse> chapterResponses = new ArrayList<>();
+        AtomicInteger i = new AtomicInteger(1);
         chapter.stream().forEach(item -> {
             ChapterResponse chapterResponse = ChapterResponse.builder()
-                    .number(item.getNumber())
+                    .number((long) i.getAndIncrement())
                     .content(item.getContent())
                     .chapterTitle(item.getChapterTitle())
                     .name(book.getTitle())

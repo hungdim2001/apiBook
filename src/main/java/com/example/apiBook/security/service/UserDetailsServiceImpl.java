@@ -22,19 +22,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String account) throws UsernameNotFoundException {
         User user = userRepository.findByUsernameOrEmail(account).orElseThrow(
-                () -> new NotFoundException(HttpStatus.NOT_FOUND,"username or password is incorrect" )
+                () -> new NotFoundException(HttpStatus.NOT_FOUND, "username or password is incorrect")
         );
         UserRole role = userRoleRepository.findByUserId(user.getId()).orElseThrow(
-                () -> new NotFoundException(HttpStatus.NOT_FOUND,"role not found" )
+                () -> new NotFoundException(HttpStatus.NOT_FOUND, "role not found")
         );
-        return UserDetailsImpl.build(user,role.getRole());
+        return UserDetailsImpl.build(user, role.getRole());
     }
     public UserDetails loadUserById(Long id) throws UsernameNotFoundException {
         User user = userRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(HttpStatus.NOT_FOUND,"User Not Found with id: " + id)
+                () -> new NotFoundException(HttpStatus.NOT_FOUND, "User Not Found with id: " + id)
         );
         UserRole role = userRoleRepository.findByUserId(user.getId()).orElseThrow(
-                () -> new NotFoundException(HttpStatus.NOT_FOUND,"role not found" )
+                () -> new NotFoundException(HttpStatus.NOT_FOUND, "role not found")
         );
         return UserDetailsImpl.build(user, role.getRole());
     }

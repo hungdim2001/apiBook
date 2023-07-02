@@ -82,7 +82,7 @@
     background: url("chosen-sprite.png") no-repeat -22px -3px; }
 
 .chosen-container-single .chosen-single {
-    background-color: #fff;
+    background-color: #1b2a47;
     -webkit-background-clip: padding-box;
     -moz-background-clip: padding;
     background-clip: padding-box;
@@ -162,7 +162,7 @@
     left: -9000px; }
 
 .chosen-container-multi .chosen-choices {
-    background-color: #fff;
+    background-color: #1b2a47;
     border: 1px solid #03a9f4;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
@@ -245,7 +245,7 @@
     -o-transition: border linear 0.2s, box-shadow linear 0.2s;
     transition: border linear 0.2s, box-shadow linear 0.2s; }
 .chosen-container-active.chosen-with-drop .chosen-single {
-    background-color: #fff;
+    background-color: #1b2a47;
     border: 1px solid #03a9f4 ;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;

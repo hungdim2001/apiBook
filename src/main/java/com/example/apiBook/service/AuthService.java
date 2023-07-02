@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Date;
 
@@ -69,7 +70,7 @@ public class AuthService {
                 .email(user.getEmail())
                 .password(encoder.encode(user.getPassword()))
                 .username(user.getUsername())
-                .status(false)
+                .status(true)
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .build();

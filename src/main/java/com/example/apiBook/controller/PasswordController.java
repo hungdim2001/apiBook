@@ -42,7 +42,7 @@ public class PasswordController {
 
     @PostMapping("/reset-password")
     @CrossOrigin
-    public String resetPassword(@RequestParam("token")  String token, @RequestParam("password") String password, Model model, RedirectAttributes redirectAttributes) {
+    public String resetPassword1(@RequestParam("token")  String token, @RequestParam("password") String password, Model model, RedirectAttributes redirectAttributes) {
         Optional<User> user = userRepository.findById(Long.valueOf(jwtUtils.getIdFromJwtToken(token, true)));
         if (!user.isPresent()) {
             model.addAttribute("error", "Trang web không hợp lệ");

@@ -1,7 +1,6 @@
 package com.example.apiBook.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -9,6 +8,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "users_roles")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +19,6 @@ public class UserRole {
     Long userId;
     @Column(name = "role", nullable = false)
     String role;
+
+
 }

@@ -49,7 +49,7 @@ Version: 3.4.4 Timestamp: Thu Oct 24 13:23:11 PDT 2013
           -ms-user-select: none;
               user-select: none;
 
-    background-color: #fff;
+    background-color: #1b2a47;
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(0.5, #fff));
     background-image: -webkit-linear-gradient(center bottom, #eee 0%, #fff 50%);
     background-image: -moz-linear-gradient(center bottom, #eee 0%, #fff 50%);
@@ -123,7 +123,7 @@ Version: 3.4.4 Timestamp: Thu Oct 24 13:23:11 PDT 2013
     opacity: 0;
     z-index: 9998;
     /* styles required for IE to work */
-    background-color: #fff;
+    background-color: #1b2a47;
     filter: alpha(opacity=0);
 }
 
@@ -348,7 +348,7 @@ Version: 3.4.4 Timestamp: Thu Oct 24 13:23:11 PDT 2013
 
 .select2-results .select2-highlighted {
     background: #3875d7;
-    color: #fff;
+    color: #1b2a47;
 }
 
 .select2-results li em {
@@ -434,7 +434,7 @@ disabled look for disabled choices in the results dropdown
     cursor: text;
     overflow: hidden;
 
-    background-color: #fff;
+    background-color: #1b2a47;
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eee), color-stop(15%, #fff));
     background-image: -webkit-linear-gradient(top, #eee 1%, #fff 15%);
     background-image: -moz-linear-gradient(top, #eee 1%, #fff 15%);

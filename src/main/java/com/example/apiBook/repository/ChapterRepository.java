@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ChapterRepository extends JpaRepository<Chapter, Long> {
 
-    @Query("SELECT c FROM Chapter c WHERE c.bookId = :bookId  ORDER BY c.id")
+    @Query("SELECT c FROM Chapter c WHERE c.bookId = :bookId  ORDER BY c.createdAt")
     List<Chapter> getChapterByBookId(@Param("bookId") Long id);
 
     @Query(value = "SELECT c.*\n" +

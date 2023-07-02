@@ -44,7 +44,6 @@ public class AuthController {
     @ApiOperation(value = "Đăng nhập")
     @PostMapping("/login")
     @CrossOrigin
-
     public ResponseEntity signIn(@Valid @RequestBody LoginRequest user) {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObj(HttpStatus.OK.value(), true, "login successfully", authService.signIn(user)));
 

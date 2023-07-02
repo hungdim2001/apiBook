@@ -11,7 +11,7 @@
 /* Styling Next and Prev buttons */
 
 .owl-theme .owl-controls .owl-buttons div{
-	color: #FFF;
+	color: #1b2a47;
 	display: inline-block;
 	zoom: 1;
 	*display: inline;/*IE7 life-saver */
@@ -64,7 +64,7 @@
 .owl-theme .owl-controls .owl-page span.owl-numbers{
 	height: auto;
 	width: auto;
-	color: #FFF;
+	color: #1b2a47;
 	padding: 2px 10px;
 	font-size: 12px;
 	-webkit-border-radius: 30px;

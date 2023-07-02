@@ -53,12 +53,12 @@
     border-color: #03a9f4 #03a9f4 #002a80;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-    color: #fff;
+    color: #1b2a47;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 .x-editor-custom .select2-container .select2-choice{
 	border: 0px solid #aaa;
-	color: #fff;
+	color: #1b2a47;
 	border-radius: 0px;
 	background-color: #03a9f4;
 	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #03a9f4), color-stop(0.5, #03a9f4));
@@ -81,7 +81,7 @@
 	border: 1px solid #03a9f4;
 }
 .x-editor-custom .select2-container-multi .select2-choices .select2-search-choice{
-    color: #fff;
+    color: #1b2a47;
     border: 1px solid #03a9f4;
     border-radius: 0px;
     -webkit-box-shadow: 0 0 2px #03a9f4 inset, 0 1px 0 #03a9f4;
